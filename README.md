@@ -24,3 +24,4 @@ Alteração via PR
 	2. Verificar logs em `/var/log/deploy.log`
 	3. Validar endpoints de saúde
   4. Health check: /health
+- Health check: /health
