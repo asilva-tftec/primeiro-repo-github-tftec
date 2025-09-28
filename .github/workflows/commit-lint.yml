@@ -1,0 +1,20 @@
+name: TFTEC Commit Validation
+on: [push, pull_request]
+jobs:
+  validate-commits:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Check commit messages
+      run: |
+        for commit in $(git rev-list HEAD ^origin/main); do
+          message=$(git log --format=%B -n 1 $commit)
+          if ! echo "$message" | grep -qE '^TFTEC-[0-9]{3}: (feat|fix|docs|style|refactor|test|chore)'; then
+            echo "❌ Commit inválido: $message"
+            echo "Deve seguir: TFTEC-XXX: type: descrição"
+            exit 1
+          fi
+        done
+        echo "✅ Todos os commits seguem o padrão TFTEC"
